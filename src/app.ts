@@ -22,16 +22,27 @@ const messages = [
     {message: "Hello", id: "1231asdcx2eadzxsawr", user: {id: "123123edasasdq2asd", name: "Vika"}}
 ]
 
+const users = new Map()
+
 
 io.on('connection', (socket: Socket) => {
+    users.set(socket, {name: {id: new Date().getTime().toString(), name: 'anonym'}});
+    socket.on("client-name-send", (name: string) => {
+        const user = users.get(socket)
+        user.name = name
+    })
+
     socket.on('client-message-sent', (message: string) => {
-        if(typeof message !== 'string'){
+        if (typeof message !== 'string') {
             return
         }
-       let messageItem = {
-           message, id: '123412' + new Date().getTime(), user: {id: "123123edasasdq2asd", name: "Vika"}
-       }
-       messages.push(messageItem)
+
+        const user = users.get(socket)
+
+        let messageItem = {
+            message, id: '123412' + new Date().getTime(), user: {id: user.id, name: user.name}
+        }
+        messages.push(messageItem)
 
 
         io.emit("new-message-sent", messageItem);
