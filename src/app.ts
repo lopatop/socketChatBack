@@ -24,6 +24,19 @@ io.on('connection', (socket: Socket) => {
         id: socket.id,
         user: { id: 'server', name: 'Server' }
     });
+
+    socket.on('client-message-sent', (message: string) => {
+        console.log('📥 Message from client:', message);
+
+        io.emit('newMessage', {
+            message: message,
+            id: crypto.randomUUID?.() || Date.now().toString(),
+            user: {
+                id: socket.id,
+                name: 'Guest'
+            }
+        });
+    });
 });
 
 const PORT = process.env.PORT || 3009;
