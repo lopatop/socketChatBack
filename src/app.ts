@@ -18,7 +18,6 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket: Socket) => {
     console.log('a user connected');
-    socket.emit('newMessage', { text: 'Привет! Ты подключился к серверу WebSocket.' });
 });
 
 const PORT = process.env.PORT || 3009;
