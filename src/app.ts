@@ -17,7 +17,13 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket: Socket) => {
-    console.log('a user connected');
+    console.log('🟢 New user connected:', socket.id);
+
+    socket.emit('newMessage', {
+        message: 'Добро пожаловать!',
+        id: socket.id,
+        user: { id: 'server', name: 'Server' }
+    });
 });
 
 const PORT = process.env.PORT || 3009;
