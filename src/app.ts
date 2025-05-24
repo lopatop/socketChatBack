@@ -25,8 +25,13 @@ const messages = [
 
 io.on('connection', (socket: Socket) => {
     socket.on('client-message-sent', (message: string) => {
-        console.log('📥 Message from client:', message);
-        console.log('🟢 New user connected:', socket.id);
+       let messageItem = {
+           message, id: '123412' + new Date().getTime(), user: {id: "123123edasasdq2asd", name: "Vika"}
+       }
+       messages.push(messageItem)
+
+
+        io.emit("new-message-sent", messageItem);
 
     });
     socket.emit('init-messages-published', messages)
