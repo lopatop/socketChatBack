@@ -25,6 +25,9 @@ const messages = [
 
 io.on('connection', (socket: Socket) => {
     socket.on('client-message-sent', (message: string) => {
+        if(typeof message !== 'string'){
+            return
+        }
        let messageItem = {
            message, id: '123412' + new Date().getTime(), user: {id: "123123edasasdq2asd", name: "Vika"}
        }
