@@ -27,7 +27,15 @@ const users = new Map()
 
 io.on('connection', (socket: Socket) => {
     users.set(socket, {name: {id: new Date().getTime().toString(), name: 'anonym'}});
+
+    socket.on('disconnect', () => {
+        users.delete(socket);
+    })
+
     socket.on("client-name-send", (name: string) => {
+        if(typeof name !== "string" || name.trim().length === 0 ) {
+            return
+        }
         const user = users.get(socket)
         user.name = name
     })
