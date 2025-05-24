@@ -1,7 +1,7 @@
 import express from 'express';
 import http from 'http';
-import { Server } from "socket.io";
-import type { Socket } from "socket.io";
+import {Server} from "socket.io";
+import type {Socket} from "socket.io";
 
 const app = express();
 const server = http.createServer(app);
@@ -16,27 +16,20 @@ app.get('/', (req, res) => {
     res.send("Hello it's WS server ");
 });
 
+
+const messages = [
+    {message: "Hello", id: "12312eadsawr", user: {id: "123edasasd", name: "Pawel"}},
+    {message: "Hello", id: "1231asdcx2eadzxsawr", user: {id: "123123edasasdq2asd", name: "Vika"}}
+]
+
+
 io.on('connection', (socket: Socket) => {
-    console.log('🟢 New user connected:', socket.id);
-
-    socket.emit('newMessage', {
-        message: 'Добро пожаловать!',
-        id: socket.id,
-        user: { id: 'server', name: 'Server' }
-    });
-
     socket.on('client-message-sent', (message: string) => {
         console.log('📥 Message from client:', message);
+        console.log('🟢 New user connected:', socket.id);
 
-        io.emit('newMessage', {
-            message: message,
-            id: crypto.randomUUID?.() || Date.now().toString(),
-            user: {
-                id: socket.id,
-                name: 'Guest'
-            }
-        });
     });
+    socket.emit('init-messages-published', messages)
 });
 
 const PORT = process.env.PORT || 3009;
