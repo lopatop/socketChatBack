@@ -33,9 +33,6 @@ io.on('connection', (socket: Socket) => {
     })
 
     socket.on("client-name-send", (name: string) => {
-        if(typeof name !== "string" || name.trim().length === 0 ) {
-            return
-        }
         const user = users.get(socket)
         user.name = name
     })
